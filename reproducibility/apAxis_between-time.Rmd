@@ -1,0 +1,143 @@
+---
+title: "Time comparison AP-axis"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Notebook for performing the DESeq2 analysis
+
+Here we perform DEseq2 analysis for each time comparison, i.e. to identify the genes that change between the time points (in anterior and posterior tissues).
+
+This is performed on each condition separately.
+
+```{r}
+library(DESeq2)
+
+project_dir <- '../data/results/deseq2/'
+
+date <- '20210124'
+
+runDeseq2BetweenTime <- function (filename, output_filename) {
+
+    file_path <- paste(project_dir, filename, sep='')
+  
+    print(paste("========================== RUNNING ", filename, " ============================", sep=""))
+      # https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html
+    counts <- read.csv(file_path, header = TRUE, sep = ",")
+    rownames(counts) <- counts$u_id
+
+    # Let's make sure our count data is in matrix format and is only the numeric columns i.e. everything but the genes
+    counts <- counts[,2:ncol(counts)]
+
+    sample_names <- colnames(counts) # Sample names
+    
+    # Make sure we don't include the ID in our columns
+    count_matrix <- as.matrix(counts)
+    
+    # We now set the row names to be the gene IDs
+    rownames(count_matrix) <- rownames(counts) 
+    
+    # Separate out each of the sample names to be the different experiment conditions
+    condition <- factor(sapply(sample_names, function(x){substr(x, start = 1, stop = 2)}))
+    time <- factor(sapply(sample_names, function(x){substr(x, start = 3, stop = 4)}))
+    tissue <- factor(sapply(sample_names, function(x){substr(x, start = 5, stop = 6)}))
+    condition_id <- factor(sapply(sample_names, function(x){if (grepl("ko", x, fixed = TRUE)) {1} else {0}}))
+
+    # For DEseq2 we need to turn this into a dataframe 
+    sample_df = data.frame(sample_names = sample_names, condition = condition, time = time, tissue = tissue, condition_id=condition_id)
+    dds_mat <- DESeqDataSetFromMatrix(countData = count_matrix,
+                                     colData = sample_df,
+                                     design = ~tissue+time) # Have tissue as a factor
+    
+    dds <- estimateSizeFactors(dds_mat)
+    
+    dds_mat$design # Print the design of the experiment
+    dds <- estimateSizeFactors(dds_mat)
+    
+    num_samples_meeting_criteria <- 4  # be strict and enforce that at least half the samples need to meet the criteria (i.e. one full condition)
+    num_counts_in_gene <- 10  # They need at least 10 counts
+    keep <- rowSums(counts(dds_mat) >= num_counts_in_gene) >= num_samples_meeting_criteria
+    dds <- dds_mat[keep,] # Only keep the rows with this criteria
+    
+     # Let's print the number of rows
+    print(paste("Dataset dimensions: ", nrow(dds), ncol(dds)))
+    if (ncol(dds) != 8) {
+      print(paste("================== WARNING WARNING WARNING YOUR COLUMNS MAY HAVE THE WRONG DIMS  ===========================", sep=""))
+    }
+    
+    # Run DEseq2
+    dds <- DESeq(dds)
+    
+    # Build results table
+    res <- results(dds)
+    print(paste("Deseq2 design: ", design(dds)))
+
+    # Sumarise the results
+    summary(res)
+    
+    # Lastly, we may want to see the results of the high logfoldchange e.g. > 1 with a padj value < 0.05
+    res_padj05_lfc1 <- results(dds, lfcThreshold=2)
+    table(res_padj05_lfc1$padj < 0.05)
+    
+    # Save the results
+    res_ordered <- res[order(res$pvalue),]
+    output_filename <- paste(project_dir, output_filename, sep='')
+    write.csv(res_ordered, file = output_filename)
+    return(res_ordered)
+}
+
+```
+
+
+## Run each of the supplimentary DEseq 2 experiments
+
+```{r}
+runDeseq2BetweenTime(paste('merged_df_anterior_wt_11-18_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_anterior_wt_11-18_', date, '.csv', sep=''))
+runDeseq2BetweenTime(paste('merged_df_anterior_ko_11-18_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_anterior_ko_11-18_', date, '.csv', sep=''))
+
+runDeseq2BetweenTime(paste('merged_df_anterior_wt_11-13_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_anterior_wt_11-13_', date, '.csv', sep=''))
+runDeseq2BetweenTime(paste('merged_df_anterior_ko_11-13_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_anterior_ko_11-13_', date, '.csv', sep=''))
+
+runDeseq2BetweenTime(paste('merged_df_anterior_wt_13-18_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_anterior_wt_13-18_', date, '.csv', sep=''))
+runDeseq2BetweenTime(paste('merged_df_anterior_ko_13-18_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_anterior_ko_13-18_', date, '.csv', sep=''))
+
+runDeseq2BetweenTime(paste('merged_df_anterior_wt_11-15_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_anterior_wt_11-15_', date, '.csv', sep=''))
+runDeseq2BetweenTime(paste('merged_df_anterior_ko_11-15_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_anterior_ko_11-15_', date, '.csv', sep=''))
+
+runDeseq2BetweenTime(paste('merged_df_anterior_wt_13-15_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_anterior_wt_13-15_', date, '.csv', sep=''))
+runDeseq2BetweenTime(paste('merged_df_anterior_ko_13-15_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_anterior_ko_13-15_', date, '.csv', sep=''))
+
+runDeseq2BetweenTime(paste('merged_df_anterior_wt_15-18_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_anterior_wt_15-18_', date, '.csv', sep=''))
+runDeseq2BetweenTime(paste('merged_df_anterior_ko_15-18_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_anterior_ko_15-18_', date, '.csv', sep=''))
+
+runDeseq2BetweenTime(paste('merged_df_posterior_wt_11-18_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_posterior_wt_11-18_', date, '.csv', sep=''))
+runDeseq2BetweenTime(paste('merged_df_posterior_ko_11-18_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_posterior_ko_11-18_', date, '.csv', sep=''))
+
+runDeseq2BetweenTime(paste('merged_df_posterior_wt_11-13_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_posterior_wt_11-13_', date, '.csv', sep=''))
+runDeseq2BetweenTime(paste('merged_df_posterior_ko_11-13_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_posterior_ko_11-13_', date, '.csv', sep=''))
+
+runDeseq2BetweenTime(paste('merged_df_posterior_wt_13-18_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_posterior_wt_13-18_', date, '.csv', sep=''))
+runDeseq2BetweenTime(paste('merged_df_posterior_ko_13-18_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_posterior_ko_13-18_', date, '.csv', sep=''))
+
+runDeseq2BetweenTime(paste('merged_df_posterior_wt_15-18_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_posterior_wt_15-18_', date, '.csv', sep=''))
+runDeseq2BetweenTime(paste('merged_df_posterior_ko_15-18_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_posterior_ko_15-18_', date, '.csv', sep=''))
+
+runDeseq2BetweenTime(paste('merged_df_posterior_wt_11-15_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_posterior_wt_11-15_', date, '.csv', sep=''))
+runDeseq2BetweenTime(paste('merged_df_posterior_ko_11-15_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_posterior_ko_11-15_', date, '.csv', sep=''))
+
+runDeseq2BetweenTime(paste('merged_df_posterior_wt_13-15_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_posterior_wt_13-15_', date, '.csv', sep=''))
+runDeseq2BetweenTime(paste('merged_df_posterior_ko_13-15_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_posterior_ko_13-15_', date, '.csv', sep=''))
+```
+
+### Print session info
+```{r}
+sessionInfo()
+```
+
+### References:
+
+Love MI, Huber W, Anders S (2014). “Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2.” Genome Biology, 15, 550. doi: 10.1186/s13059-014-0550-8.
+

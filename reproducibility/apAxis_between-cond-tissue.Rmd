@@ -1,0 +1,185 @@
+---
+title: "Eed-cKO vs WT comparison AP-axis"
+output: html_notebook
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## DE for Eed-cKO vs WT on FB, MB, HB, SC
+
+In this notebook we test for differential expression between \emph{Eed-cKO} and WT tissues in the developing mouse CNS.\
+
+Each condition (WT, \emph{Eed-cKO}, for FB, MB, HB, and SC) contains six samples (two replicates at e13.5, e15.5, and e18).\
+
+For this analysis, we are not interested in the effects of time and thus add in the time factor to our DE (linear) model as a batch correction factor.\
+
+
+### Script setup
+
+```{r}
+library(DESeq2)
+
+# Global variables to make name formats consistent
+project_dir <- '../data/results/deseq2/'
+date <- '20210124'
+
+runDeseq2BetweenCond <- function (filename, output_filename, run_type) {
+
+    file_path <- paste(project_dir, filename, sep='')
+  
+    print(paste("========================== RUNNING ", filename, " ============================", sep=""))
+      # https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html
+    counts <- read.csv(file_path, header = TRUE, sep = ",")
+    rownames(counts) <- counts$u_id
+
+    # Let's make sure our count data is in matrix format and is only the numeric columns i.e. everything but the genes
+    counts <- counts[,2:ncol(counts)]
+
+    sample_names <- colnames(counts) # Sample names
+    
+    # Make sure we don't include the ID in our columns
+    count_matrix <- as.matrix(counts)
+    
+    # We now set the row names to be the gene IDs
+    rownames(count_matrix) <- rownames(counts) 
+    
+    # Separate out each of the sample names to be the different experiment conditions
+    condition <- factor(sapply(sample_names, function(x){substr(x, start = 1, stop = 2)}))
+    time <- factor(sapply(sample_names, function(x){substr(x, start = 3, stop = 4)}))
+    tissue <- factor(sapply(sample_names, function(x){substr(x, start = 5, stop = 6)}))
+    condition_id <- factor(sapply(sample_names, function(x){if (grepl("ko", x, fixed = TRUE)) {1} else {0}}))
+
+    # For DEseq2 we need to turn this into a dataframe 
+    sample_df = data.frame(sample_names = sample_names, condition = condition, time = time, tissue = tissue, condition_id=condition_id)
+    dds_mat <- DESeqDataSetFromMatrix(countData = count_matrix,
+                                     colData = sample_df,
+                                     design = ~time+condition_id) # Have tissue as a factor
+    
+    dds <- estimateSizeFactors(dds_mat)
+    
+    dds_mat$design # Print the design of the experiment
+    dds <- estimateSizeFactors(dds_mat)
+    
+    num_samples_meeting_criteria <- 6 # be strict and enforce that at least half the samples need to meet the criteria (i.e. one full condition)
+    num_counts_in_gene <- 10  # They need at least 10 counts
+    keep <- rowSums(counts(dds_mat) >= num_counts_in_gene) >= num_samples_meeting_criteria
+    dds <- dds_mat[keep,] # Only keep the rows with this criteria
+    
+    # Let's print the number of rows & column
+    print(paste("Dataset dimensions: ", nrow(dds), ncol(dds)))
+    if (ncol(dds) != 12) {
+      print(paste("================== WARNING WARNING WARNING YOUR COLUMNS MAY HAVE THE WRONG DIMS  ===========================", sep=""))
+    }
+    
+    # Run DEseq2
+    dds <- DESeq(dds)
+    
+    # Build results table
+    res <- results(dds)
+    print(paste("Deseq2 design: ", design(dds)))
+
+    # Sumarise the results
+    summary(res)
+    
+    # Lastly, we may want to see the results of the high logfoldchange e.g. > 1 with a padj value < 0.05
+    res_padj05_lfc1 <- results(dds, lfcThreshold=2)
+    table(res_padj05_lfc1$padj < 0.05)
+    
+    # Save the results
+    res_ordered <- res[order(res$pvalue),]
+    output_filename <- paste(project_dir, output_filename, sep='')
+    write.csv(res_ordered, file = output_filename)
+    return(res_ordered)
+}
+
+```
+
+## Run DE on each tissue
+
+Here we run the DE analysis on each tissue for the comparison.
+```{r}
+
+runDeseq2BetweenCond(paste('merged_df_fb_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_fb_', date, '.csv', sep=''))
+runDeseq2BetweenCond(paste('merged_df_mb_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_mb_', date, '.csv', sep=''))
+runDeseq2BetweenCond(paste('merged_df_hb_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_hb_', date, '.csv', sep=''))
+runDeseq2BetweenCond(paste('merged_df_sc_FEATURE_COUNTS_', date, '.csv', sep=''), paste('DEseq2_CNS_sc_', date, '.csv', sep=''))
+
+```
+
+## Normalise the data
+```{r}
+library(edgeR)
+
+filename <- paste(project_dir, 'merged_df_FEATURE_COUNTS_', date, '.csv', sep='')
+# https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html
+counts <- read.csv(filename, header = TRUE, sep = ",")
+rownames(counts) <- counts$entrezgene_id
+genes <- counts$entrezgene_id
+
+# Let's make sure our count data is in matrix format and is only the numeric columns i.e. everything but the genes
+counts <- counts[,2:ncol(counts)]
+counts[is.na(counts)] = 0
+# Here we get the names of the columns, for my stuff I always have all the info in one string as I find it makes it easier
+# this means each of the "groups" are separated by a "_" this may be different for you
+sampleNames <- colnames(counts) # Sample names
+
+# For DEseq2 we need to turn this into a dataframe 
+sampleDF = data.frame(sampleNames = sampleNames)
+
+# Make sure we don't include the ID in our columns
+countMatrix <- as.matrix(counts)
+
+# We now set the row names to be the gene IDs
+rownames(countMatrix) <- genes
+
+ddsMat <- DESeqDataSetFromMatrix(countData = countMatrix,
+                                 colData = sampleDF,
+                                 design = ~ 1)
+
+dds <- estimateSizeFactors(ddsMat)
+outputFilename <- paste(project_dir, 'merged_df_FEATURE_COUNTS_DEseq2Norm_', date, '.csv', sep='')
+write.csv(counts(dds,normalized=TRUE), file = outputFilename)
+
+rld <- rlog(countMatrix + 1, blind = FALSE)
+rownames(rld) <- genes
+outputFilename <- paste(project_dir, 'merged_df_FEATURE_COUNTS_rlog_', date, '.csv', sep='')
+write.csv(rld, file = outputFilename)
+
+# Based on the documentation below, it is best to use TMM normalisation from EdgeR when 
+# comparing accross genes, which is what we will be doing in our subsequent analyses.
+# https://hbctraining.github.io/DGE_workshop/lessons/02_DGE_count_normalization.html
+# https://rdrr.io/bioc/edgeR/man/calcNormFactors.html
+# https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf
+# https://www.biostars.org/p/317701/
+
+dge <- DGEList(counts=countMatrix)
+cpm(dge)
+dge <- calcNormFactors(dge, method="TMM")
+tmm <- cpm(dge)
+rownames(tmm) <- genes
+
+outputFilename <- paste(project_dir, 'merged_df_FEATURE_COUNTS_tmm_', date, '.csv', sep='')
+write.csv(tmm, file = outputFilename, row.names=TRUE)
+
+vsd <- vst(dds, blind = TRUE)
+rownames(vsd) <- genes
+outputFilename <- paste(project_dir, 'merged_df_FEATURE_COUNTS_vst_', date, '.csv', sep='')
+write.csv(rld, file = outputFilename)
+
+```
+
+### Print session info
+```{r}
+sessionInfo()
+```
+
+### References:
+hbctraining/DGE_workshop. Teaching materials at the Harvard Chan Bioinformatics Core, 2021. Accessed: Jun. 15, 2021. [Online]. Available: https://github.com/hbctraining/DGE_workshop  
+
+Love MI, Huber W, Anders S (2014). “Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2.” Genome Biology, 15, 550. doi: 10.1186/s13059-014-0550-8.  
+
+M. D. Robinson, D. J. McCarthy, and G. K. Smyth, ‘edgeR: a Bioconductor package for differential expression analysis of digital gene expression data’, Bioinformatics, vol. 26, no. 1, pp. 139–140, Jan. 2010, doi: 10.1093/bioinformatics/btp616.  
+

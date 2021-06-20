@@ -1,0 +1,205 @@
+---
+title: "ORA and GSEA A-P axis analysis"
+output: html_notebook
+---
+
+
+```{r}
+library(clusterProfiler)
+library(AnnotationHub)
+library(ensembldb)
+library(tidyverse)
+library(org.Mm.eg.db)
+# install.packages("svglite")
+library(svglite)
+# BiocManager::install("GSEABase")
+library(GSEABase)
+```
+
+
+## Run ORA on the A-P dataset subset by response and presence of H3K27me3
+
+```{r}
+date <- 'gene-name_20210124'
+data_dir <- '../data/results/prelim/'
+fig_dir <- '../figures/prelim/'
+
+runORAAPaxis <- function(background_genes, gene_set, label="") {
+  
+  clusterGoSummary <- enrichGO(gene = gene_set, 
+                universe = background_genes,
+                keyType = "ENTREZID",
+                OrgDb = org.Mm.eg.db, 
+                ont = "ALL",
+                pAdjustMethod = "BH", 
+                qvalueCutoff = 0.1, 
+                readable = TRUE)
+  
+  if (!(dim(clusterGoSummary)[1] == 0)) { # exclude df's that have no observations
+    size = 3
+    plt <- dotplot(clusterGoSummary, showCategory=10, font.size = 6) + ggtitle(label) + 
+      theme_classic(base_size = 6, base_family = "sans") + 
+      theme(aspect.ratio = 2.0, axis.text.x=element_text(size=6), axis.text.y=element_text(size=6),
+             axis.title=element_text(size=8,face="bold"))
+    ggsave(file=paste0(fig_dir, "ora_cluster", label, "-ORA.pdf"), plot=plt,  width=5, height=5 * 2.0)
+    plt
+    
+    Emapplot <- emapplot(clusterGoSummary, pie_scale=0.5, line_scale=0.2, showCategory=15, layout = "nicely") + ggtitle(label) +
+      theme(aspect.ratio = 1.0, axis.text.x=element_text(size=6), axis.text.y=element_text(size=6),
+             axis.title=element_text(size=8,face="bold"))
+    ggsave(file=paste(fig_dir, "ora_cluster-", label, "_EmaPlot.pdf", sep=''), plot=Emapplot,  width=size, height=size)
+    Emapplot
+    
+    Heatplot <- heatplot(clusterGoSummary, showCategory=30) + ggtitle(label) +
+      theme(axis.text.x=element_text(size=6), axis.text.y=element_text(size=6),
+             axis.title=element_text(size=8,face="bold"))
+    ggsave(file=paste(fig_dir, "ora_cluster-", label, "_Heatmap.pdf", sep=''), width=10, height=8, plot=Heatplot)
+    Heatplot
+  } else {
+    print(paste0("You had no results for: ", label))
+  }
+}
+
+# Run the first ORA comparing sig with at least one compared to BG
+background <- read.csv(paste(data_dir, 'All_genes_', date, '.csv', sep=''))
+non_sig_genes <- read.csv(paste(data_dir, 'Non-sig_genes_', date, '.csv', sep=''))
+sig_genes <- read.csv(paste(data_dir, 'Genes_with_at_least_1_sig_', date, '.csv', sep=''))
+
+runORAAPaxis(as.character(background$entrezgene_id), as.character(non_sig_genes$entrezgene_id), "nonSig-vs-BG")
+runORAAPaxis(as.character(background$entrezgene_id), as.character(sig_genes$entrezgene_id), "sig-vs-BG")
+
+# Now we want to compare against the ref (i.e. sig with H3K27me3 against sig)
+marked_sig_genes <- read.csv(paste(data_dir, 'Sig_with_H3K27me3_', date, '.csv', sep=''))
+not_marked_sig_genes <- read.csv(paste(data_dir, 'Sig_unmarked_', date, '.csv', sep=''))
+
+runORAAPaxis(as.character(sig_genes$entrezgene_id), as.character(marked_sig_genes$entrezgene_id), "SigMarked-vs-sig")
+runORAAPaxis(as.character(sig_genes$entrezgene_id), as.character(not_marked_sig_genes$entrezgene_id), "SigNotMarked-vs-sig")
+
+# Do the same for unsig
+marked_not_sig_genes <- read.csv(paste(data_dir, 'NS_with_H3K27me3_', date, '.csv', sep=''))
+not_marked_not_sig_genes <- read.csv(paste(data_dir, 'NS_unmarked_', date, '.csv', sep=''))
+
+runORAAPaxis(as.character(non_sig_genes$entrezgene_id), as.character(marked_not_sig_genes$entrezgene_id), "NSMarked-vs-NS")
+runORAAPaxis(as.character(non_sig_genes$entrezgene_id), as.character(not_marked_not_sig_genes$entrezgene_id), "NSNotMarked-vs-NS")
+
+# Now we want to compare robustly affected marked vs just all significantly affected and marked
+robust_marked_sig_genes <- read.csv(paste(data_dir, 'Exp._Sig_Marked_Perturbed_', date, '.csv', sep=''))
+not_robust_robust_marked_sig_genes <- read.csv(paste(data_dir, 'Exp._Sig_Marked_un-Perturbed_', date, '.csv', sep=''))
+
+runORAAPaxis(as.character(marked_sig_genes$entrezgene_id), as.character(robust_marked_sig_genes$entrezgene_id), "RobustSigMarked-vs-SigMarked")
+runORAAPaxis(as.character(marked_sig_genes$entrezgene_id), as.character(not_robust_robust_marked_sig_genes$entrezgene_id), "NotRobustSigMarked-vs-SigMarked")
+
+# Now we want to look at the unmarked ones (robustly affected vs not robustly affected )
+robust_unmarked_sig_genes <- read.csv(paste(data_dir, 'Exp._Sig_Unmarked_Perturbed_', date, '.csv', sep=''))
+not_robust_robust_unmarked_sig_genes <- read.csv(paste(data_dir, 'Exp._Sig_Unmarked_un-Perturbed_', date, '.csv', sep=''))
+
+runORAAPaxis(as.character(not_marked_sig_genes$entrezgene_id), as.character(robust_unmarked_sig_genes$entrezgene_id), "RobustSigUnmarked-vs-SigUnmarked")
+runORAAPaxis(as.character(not_marked_sig_genes$entrezgene_id), as.character(not_robust_robust_unmarked_sig_genes$entrezgene_id), "NotRobustSigUnmarked-vs-SigUnmarked")
+
+# Lucky last is moving down the unsig side (looking at marked and then unmarked)
+expressed_marked_not_sig_genes <- read.csv(paste(data_dir, 'NS_genes_with_H3K27me3_and_expression_', date, '.csv', sep=''))
+expressed_not_marked_not_sig_genes <- read.csv(paste(data_dir, 'NS_genes_unmarked_and_expression_', date, '.csv', sep=''))
+
+runORAAPaxis(as.character(marked_not_sig_genes$entrezgene_id), as.character(expressed_marked_not_sig_genes$entrezgene_id), "NSMarkedExpressed-vs-NSMarked")
+runORAAPaxis(as.character(not_marked_not_sig_genes$entrezgene_id), as.character(expressed_not_marked_not_sig_genes$entrezgene_id), "NSNotMarkedExpressed-vs-NSNotMarked")
+
+
+```
+
+
+## GSEA on each of the logFC values 
+
+Here we just run GSEA on the main dataset for each of the logFC values.
+
+```{r}
+library(fgsea)
+# Databases from here http://bioinf.wehi.edu.au/software/MSigDB/
+load('../data/input/supps/mouse_c3_v5p2_motif-gene-sets_27102020.rdata')
+motifsMouse <- Mm.c3
+load('../data/input/supps/mouse_H_v5p2_hallmark-gene-sets.rdata')
+pathwaysMouse <- Mm.H
+load('../data/input/supps/mouse_c5_v5p2_go-gene-sets_28102020.rdata')
+goMouse <- Mm.c5
+
+# Save select terms to CSV
+sc_dev <- Mm.c5[["GO_SPINAL_CORD_DEVELOPMENT"]]
+sc_dev <- as.data.frame(sc_dev)
+write_csv(sc_dev, paste('../data/input/supps/GO/', "GO_SPINAL_CORD_DEVELOPMENT", '.csv', sep=""))
+
+fb_dev <- Mm.c5[["GO_FOREBRAIN_DEVELOPMENT"]]
+fb_dev <- as.data.frame(fb_dev)
+write_csv(fb_dev, paste('../data/input/supps/GO/', "GO_FOREBRAIN_DEVELOPMENT", '.csv', sep=""))
+
+mb_dev <- as.data.frame(Mm.c5[["GO_MIDBRAIN_DEVELOPMENT"]])
+write_csv(mb_dev, paste('../data/input/supps/GO/', "GO_MIDBRAIN_DEVELOPMENT", '.csv', sep=""))
+
+hb_dev <- as.data.frame(Mm.c5[["GO_HINDBRAIN_DEVELOPMENT"]])
+write_csv(hb_dev, paste('../data/input/supps/GO/', "GO_HINDBRAIN_DEVELOPMENT", '.csv', sep=""))
+
+
+# Downloaded KEGG as well from http://bioinf.wehi.edu.au/MSigDB/v7.1/ on 15/06/2021
+keggMouse <- readRDS('../data/input/supps/Mm.c2.cp.kegg.v7.1.entrez.rds')
+
+runUnadjGSEA <- function(ranked_values, outputPath, vaeLbl= "", numTop=4) {
+
+  fgseaResvaeMotifs <- fgsea(motifsMouse, ranked_values, minSize=5, maxSize = 500)
+  write_csv(fgseaResvaeMotifs[,c(-8)], paste(outputPath, vaeLbl, "_Motifs_", '.csv', sep=""))
+
+  fgseaResKegg <- fgsea(keggMouse, ranked_values, minSize=5, maxSize = 500)
+  write_csv(fgseaResKegg[,c(-8)], paste(outputPath, vaeLbl, "_KEGG_", '.csv', sep=""))
+
+  fgseaResvaeGo <- fgsea(goMouse, ranked_values, minSize=5, maxSize = 500)
+  write_csv(fgseaResvaeGo[,c(-8)], paste(outputPath, vaeLbl, "_GoSets", '.csv', sep=""))
+
+  for (i in 1:numTop) {
+      # Plot the top pathways and save these to a svg
+      curGSEAFeature <- fgseaResvaeGo[order(-(NES)), ][i]$pathway
+      plt <- plotEnrichment(goMouse[[curGSEAFeature]], ranked_values) + ggtitle(paste(curGSEAFeature, sep=" ")) 
+      ggsave(file=paste(outputPath, vaeLbl, "_GoSets_NEG-nes_", curGSEAFeature, '.svg', sep=""), plot=plt, width=10, height=8)
+      plt
+            # Plot the top pathways and save these to a svg
+      curGSEAFeature <- fgseaResvaeGo[order((NES)), ][i]$pathway
+      plt <- plotEnrichment(goMouse[[curGSEAFeature]], ranked_values) + ggtitle(paste(curGSEAFeature, sep=" ")) 
+      ggsave(file=paste(outputPath, vaeLbl, "_GoSets_POS-nes", curGSEAFeature, '.svg', sep=""), plot=plt, width=10, height=8)
+      plt
+  }
+  
+  fgseaResvaePath <- fgsea(pathwaysMouse, ranked_values, minSize=15, maxSize = 500)
+  write_csv(fgseaResvaePath[,c(-8)], paste(outputPath, vaeLbl, "_Pathways_", '.csv', sep=""))
+  
+}
+
+date <- '20210124'
+df <- read.csv(paste(data_dir, 'df-all_epi-2500_20210124.csv', sep=''))
+
+log_fcs <- c('log2FoldChange_fb', 'log2FoldChange_mb', 'log2FoldChange_hb', 'log2FoldChange_sc', 'log2FoldChange_a11', 'log2FoldChange_a13', 'log2FoldChange_a15', 'log2FoldChange_a18', 'log2FoldChange_p11', 'log2FoldChange_p13', 'log2FoldChange_p15', 'log2FoldChange_p18')
+
+pvalues <- c('padj_fb', 'padj_mb', 'padj_hb', 'padj_sc', 'padj_a11', 'padj_a13', 'padj_a15', 'padj_a18', 'padj_p11', 'padj_p13', 'padj_p15', 'padj_p18')
+
+i <- 1
+value <- 'log2FoldChange_fb'
+
+sig_df <- df[df[[pvalues[[i]]]] < 0.05, ]
+unranked_values <- sig_df[[value]]
+names(unranked_values) <- as.character(sig_df$entrezgene_id)
+
+ranked_values <- sig_df[[value]]
+  names(ranked_values) <- as.character(sig_df$entrezgene_id)
+  ranked_values <- sort(ranked_values, decreasing=TRUE)
+
+  
+  
+for (value in log_fcs) {
+  sig_df <- df[df[[pvalues[[i]]]] < 0.05, ]
+  ranked_values <- sig_df[[value]]
+  names(ranked_values) <- as.character(sig_df$entrezgene_id)
+  ranked_values <- sort(ranked_values, decreasing=TRUE)
+
+  runUnadjGSEA(
+         ranked_values,
+         paste(fig_dir, "GSEA_", value, '_',  pvalues[[i]],  sep=''), 
+         vaeLbl=paste("Rank", sep=''), numTop=1)
+  i = i + 1
+}
+
+```
