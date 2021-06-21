@@ -1,18 +1,17 @@
+# Deep Learning Decodes Multi-layered Roles of Polycomb Repressor Complex 2 During Mouse CNS Development
 
-#Deep Learning Decodes Multi-layered Roles of Polycomb Repressor Complex 2 During Mouse CNS Development
 
-
-##Information
+## Information
 This site hosts the information associated with the paper: **Deep Learning Decodes Multi-layered Roles of Polycomb Repressor Complex 2 During Mouse CNS Development**.
 Here we provide the code and data used for all the analyses in the paper and link to the packages we developed as part of
 producing the paper.
 
-##Links to analyses and data
+## Links to analyses and data
 - HTML outputs are available at:  [paper website](https://arianemora.github.io/mouseCNS_vae/)
 - Code and processed data is available here in the data and reproducibility folders.
 - Raw RNA-seq files are available at the NCBI/Gene Expression Omnibus under the accession GSE123331
 
-##Links to developed packages
+# #Links to developed packages
 
 - Reproducible Variational autoencoder: [scivae](https://arianemora.github.io/scivae/)
 - Epigenetic annotation to genes in python [scie2g](https://arianemora.github.io/sciepi2gene/)
@@ -20,7 +19,7 @@ producing the paper.
 - Visualisation library for chart formatting [sciviso](https://github.com/ArianeMora/sciviso/)
 
 
-##Authors
+## Authors
 
 Ariane Mora1, Jonathan Rakar3, Ignacio Monedero Cobeta3*, Behzad Yaghmaeian Salmani3#, Annika Starkenberg3, Stefan Thor2,3$, Mikael Bodén1  
 
@@ -32,7 +31,7 @@ Current addresses: #) Department of Cell and Molecular Biology, Karolinska Insti
 *Department of Physiology, Universidad Autonoma de Madrid, Madrid, Spain.  
 $) School of Biomedical Sciences, University of Queensland, St Lucia QLD 4072, Australia  
 
-##Absract
+## Absract
 
 A prominent aspect of most, if not all, central nervous systems (CNSs) is that anterior regions (brain) are
 larger than posterior ones (spinal cord). Studies in Drosophila and mouse have revealed that the Polycomb Repressor Complex 2 (PRC2)
@@ -48,9 +47,9 @@ we provide a novel bioinformatics package that can disentangle regulatory underp
 Code for our scivae package is available at [scivae](https://arianemora.github.io/scivae/)
 
 
-##Getting in touch
+## Getting in touch
 Please contact ST (s.thor@uq.edu.au), MB (m.boden@uq.edu.au), and AM (a.mora@uq.edu.au)
 
 
-##Citing the preprint
+## Citing the preprint
 Link to preprint
