@@ -1,0 +1,370 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Deep Learning Decodes Multi-layered Roles of Polycomb Repressor Complex 2 During Mouse CNS Development &mdash; scivae 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/logo.png"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script src="_static/custom.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SUMMARY" href="about.html" />
+ 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#">
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Package info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">SUMMARY</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing/index.html">Installing sci-vae</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reproducibility</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/apAxis_datasetGeneration.html">Merging RNAseq with ChIP-seq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/apAxis_between-cond-time.html">DE analysis between conditions (time)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/apAxis_between-cond-tissue.html">DE analysis between conditions (tissue)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/apAxis_between-time.html">DE analysis between time points</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/apAxis_between-tissue.html">DE analysis between tissue samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/apAxis_between-tissue.html">DE analysis between tissue samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/consistently_affected_3_nodes.html">Results for main figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/significantly_affected_3_nodes.html">Results tested at 3 nodes (significantly affected genes)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/consistently_affected_6_nodes.html">Results tested at 6 nodes (consistently affected genes)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/significantly_affected_6_nodes.html">Results tested at 6 nodes (significantly affected genes)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/significantly_affected_3_nodes.html">Results tested at 3 nodes (significantly affected genes)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Change log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">scivae</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Deep Learning Decodes Multi-layered Roles of Polycomb Repressor Complex 2 During Mouse CNS Development</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/arianemora/scivae/blob/main/docs_src/src/index.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="deep-learning-decodes-multi-layered-roles-of-polycomb-repressor-complex-2-during-mouse-cns-development">
+<h1>Deep Learning Decodes Multi-layered Roles of Polycomb Repressor Complex 2 During Mouse CNS Development<a class="headerlink" href="#deep-learning-decodes-multi-layered-roles-of-polycomb-repressor-complex-2-during-mouse-cns-development" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="information">
+<h2>Information<a class="headerlink" href="#information" title="Permalink to this headline">¶</a></h2>
+<p>This site hosts the information associated with the paper: <strong>Deep Learning Decodes Multi-layered Roles of Polycomb Repressor Complex 2 During Mouse CNS Development</strong>.
+Here we provide the code and data used for all the analyses in the paper and link to the packages we developed as part of
+producing the paper.</p>
+<div class="section" id="links-to-analyses-and-data">
+<h3>Links to analyses and data<a class="headerlink" href="#links-to-analyses-and-data" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>HTML outputs are available on the left panel</p></li>
+<li><p>Code and processed data is available at: <a class="reference external" href="https://github.com/ArianeMora/mouseCNS_vae">mouseCNS_vae</a></p></li>
+<li><p>Raw RNA-seq files are available at the NCBI/Gene Expression Omnibus under the accession GSE123331</p></li>
+</ul>
+</div>
+<div class="section" id="links-to-developed-packages">
+<h3>Links to developed packages<a class="headerlink" href="#links-to-developed-packages" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Reproducible Variational autoencoder: <a class="reference external" href="https://arianemora.github.io/scivae/">scivae</a></p></li>
+<li><p>Epigenetic annotation to genes in python <a class="reference external" href="https://arianemora.github.io/sciepi2gene/">scie2g</a></p></li>
+<li><p>Biomart python wrapper <a class="reference external" href="https://arianemora.github.io/scibiomart/">scibiomart</a></p></li>
+<li><p>Visualisation library for chart formatting <a class="reference external" href="https://github.com/ArianeMora/sciviso/">sciviso</a></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="authors">
+<h2>Authors<a class="headerlink" href="#authors" title="Permalink to this headline">¶</a></h2>
+<p>Ariane Mora1, Jonathan Rakar3, Ignacio Monedero Cobeta3*, Behzad Yaghmaeian Salmani3#, Annika Starkenberg3, Stefan Thor2,3$, Mikael Bodén1</p>
+<p>1) School of Chemistry and Molecular Biosciences
+2), and School of Biomedical Sciences, University of Queensland, St Lucia QLD 4072, Australia.
+3) Department of Clinical and Experimental Medicine, Linkoping University, SE-58185, Linkoping, Sweden.</p>
+<p>Current addresses: #) Department of Cell and Molecular Biology, Karolinska Institute, SE-171 65, Stockholm, Sweden.
+<a href="#id1"><span class="problematic" id="id2">*</span></a>Department of Physiology, Universidad Autonoma de Madrid, Madrid, Spain.
+$) School of Biomedical Sciences, University of Queensland, St Lucia QLD 4072, Australia</p>
+</div>
+<div class="section" id="absract">
+<h2>Absract<a class="headerlink" href="#absract" title="Permalink to this headline">¶</a></h2>
+<p>A prominent aspect of most, if not all, central nervous systems (CNSs) is that anterior regions (brain) are
+larger than posterior ones (spinal cord). Studies in Drosophila and mouse have revealed that the Polycomb Repressor Complex 2 (PRC2)
+acts by several mechanisms to promote anterior CNS expansion. However, it is unclear if PRC2 acts directly and/or indirectly
+upon key downstream genes, what the full spectrum of PRC2 action is during embryonic CNS development and how PRC2 integrates
+with the epigenetic landscape. We removed PRC2 function from the developing mouse CNS, by mutating the key gene Eed, and
+generated spatio-temporal transcriptomic data. We developed a bioinformatics workflow that incorporates standard
+statistical analyses with machine learning to integrate the transcriptomic response to PRC2 inactivation with epigenetic
+information from ENCODE. This multi-variate analysis corroborates the central involvement of PRC2 in anterior CNS expansion,
+and reveals layered regulation via PRC2. These findings uncover a differential logic for the role of PRC2 upon functionally
+distinct gene categories that drive CNS anterior expansion. To support the analysis of emerging multi-modal datasets,
+we provide a novel bioinformatics package that can disentangle regulatory underpinnings of heterogeneous biological processes.
+Code for our scivae package is available at <a class="reference external" href="https://github.com/ArianeMora/scivae">sci-vae</a>).</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/ISDN_poster_AM.png"><img alt="_images/ISDN_poster_AM.png" src="_images/ISDN_poster_AM.png" style="width: 800px;" /></a>
+</div>
+</div>
+<div class="section" id="reproducibility">
+<h2>Reproducibility<a class="headerlink" href="#reproducibility" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>HTML outputs from each of the notebooks for the figures used in the paper</p></li>
+<li><p>Code and data to reproduce the results</p></li>
+<li><p>A package and other examples so other biologists/bioinformatcicians can also use our methods</p></li>
+</ol>
+</div>
+<div class="section" id="getting-in-touch">
+<h2>Getting in touch<a class="headerlink" href="#getting-in-touch" title="Permalink to this headline">¶</a></h2>
+<p>Please contact ST (<a class="reference external" href="mailto:s&#46;thor&#37;&#52;&#48;uq&#46;edu&#46;au">s<span>&#46;</span>thor<span>&#64;</span>uq<span>&#46;</span>edu<span>&#46;</span>au</a>), MB (<a class="reference external" href="mailto:m&#46;boden&#37;&#52;&#48;uq&#46;edu&#46;au">m<span>&#46;</span>boden<span>&#64;</span>uq<span>&#46;</span>edu<span>&#46;</span>au</a>), and AM (<a class="reference external" href="mailto:a&#46;mora&#37;&#52;&#48;uq&#46;edu&#46;au">a<span>&#46;</span>mora<span>&#64;</span>uq<span>&#46;</span>edu<span>&#46;</span>au</a>)</p>
+</div>
+<div class="section" id="citing-the-preprint">
+<h2>Citing the preprint<a class="headerlink" href="#citing-the-preprint" title="Permalink to this headline">¶</a></h2>
+<p>Link to preprint</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Package info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">SUMMARY</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing/index.html">Installing sci-vae</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Reproducibility</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/apAxis_datasetGeneration.html">Merging RNAseq with ChIP-seq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/apAxis_between-cond-time.html">DE analysis between conditions (time)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/apAxis_between-cond-tissue.html">DE analysis between conditions (tissue)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/apAxis_between-time.html">DE analysis between time points</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/apAxis_between-tissue.html">DE analysis between tissue samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/apAxis_between-tissue.html">DE analysis between tissue samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/consistently_affected_3_nodes.html">Results for main figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/significantly_affected_3_nodes.html">Results tested at 3 nodes (significantly affected genes)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/consistently_affected_6_nodes.html">Results tested at 6 nodes (consistently affected genes)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/significantly_affected_6_nodes.html">Results tested at 6 nodes (significantly affected genes)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/significantly_affected_3_nodes.html">Results tested at 3 nodes (significantly affected genes)</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Change log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="about.html" class="btn btn-neutral float-right" title="SUMMARY" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Ariane Mora
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
