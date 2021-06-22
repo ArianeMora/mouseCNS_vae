@@ -3,8 +3,8 @@
 Installing sci-vae
 =======================
 
-Code for our scivae package is available at `sci-vae <https://github.com/ArianeMora/scivae>`_), documentation are at
-`sci-vae docs <https://arianemora.github.io/sciepi2gene/>`_).
+Code for our scivae package is available at `sci-vae <https://github.com/ArianeMora/scivae>`_, documentation are at
+`sci-vae docs <https://arianemora.github.io/scivae/>`_.
 
 Note: It is strongly recommended to create a `virtual environment <https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/>`_
 for each version of sci-vae installed.
@@ -19,7 +19,7 @@ Python using pip
 
 R
 --
-I will add it as an R package soon, but until then check out the R example using Reticulate!
+I will add it as an R package soon, but until then check out the R example using Reticulate (`sci-vae docs <https://arianemora.github.io/scivae/>`_.)!
 
 **Note**: if you are using R you need to make sure you have python installed. We strongly recommend using `anaconda <https://docs.conda.io/en/latest/miniconda.html/>`_
 and creating an envrironment and then installing scivae in a particular envrionment using `reticulate <https://rstudio.github.io/reticulate/>`_.

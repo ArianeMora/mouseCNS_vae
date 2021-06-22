@@ -11,6 +11,7 @@ producing the paper.
 Links to analyses and data
 --------------------------
 
+- Preprint: `bioRxiv <https://doi.org/10.1101/2021.06.22.449386>`_
 - HTML outputs are available on the left panel
 - Code and processed data is available at: `mouseCNS_vae <https://github.com/ArianeMora/mouseCNS_vae>`_
 - Raw RNA-seq files are available at the NCBI/Gene Expression Omnibus under the accession GSE123331
@@ -49,21 +50,12 @@ information from ENCODE. This multi-variate analysis corroborates the central in
 and reveals layered regulation via PRC2. These findings uncover a differential logic for the role of PRC2 upon functionally
 distinct gene categories that drive CNS anterior expansion. To support the analysis of emerging multi-modal datasets,
 we provide a novel bioinformatics package that can disentangle regulatory underpinnings of heterogeneous biological processes.
-Code for our scivae package is available at `sci-vae <https://github.com/ArianeMora/scivae>`_).
+Code for our scivae package is available at `sci-vae <https://github.com/ArianeMora/scivae>`_.
 
 
 .. figure:: _static/ISDN_poster_AM.png
    :width: 800
    :align: center
-
-Reproducibility
-===============
-
-1. HTML outputs from each of the notebooks for the figures used in the paper
-
-2. Code and data to reproduce the results
-
-3. A package and other examples so other biologists/bioinformatcicians can also use our methods
 
 
 Getting in touch
@@ -93,7 +85,6 @@ Link to preprint
    examples/apAxis_between-cond-time
    examples/apAxis_between-cond-tissue
    examples/apAxis_between-time
-   examples/apAxis_between-tissue
    examples/apAxis_between-tissue
 
    examples/consistently_affected_3_nodes
