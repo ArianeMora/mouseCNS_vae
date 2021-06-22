@@ -80,7 +80,7 @@ html_context = {
         ],
     'display_github': True,
     'github_user': 'arianemora',
-    'github_repo': 'scivae',
+    'github_repo': 'mouseCNS_vae',
     'github_version': 'main/docs_src/src/'
      }
 
@@ -91,7 +91,7 @@ html_js_files = [
 html_logo = '_static/logo.png'
 
 # Sitemap settings
-html_baseurl = 'https://arianemora.github.io/scivae/'
+html_baseurl = 'https://arianemora.github.io/mouseCNS_vae/'
 sitemap_url_scheme = "{link}"
 
 nbsphinx_allow_errors = True
