@@ -11,7 +11,7 @@ producing the paper.
 - Code and processed data is available here in the data and reproducibility folders.
 - Raw RNA-seq files are available at the NCBI/Gene Expression Omnibus under the accession GSE123331
 
-# #Links to developed packages
+## Links to developed packages
 
 - Reproducible Variational autoencoder: [scivae](https://arianemora.github.io/scivae/)
 - Epigenetic annotation to genes in python [scie2g](https://arianemora.github.io/sciepi2gene/)
