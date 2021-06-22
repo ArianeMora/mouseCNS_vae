@@ -11,6 +11,7 @@ producing the paper.
 Links to analyses and data
 --------------------------
 
+- Preprint: `bioRxiv <https://doi.org/10.1101/2021.06.22.449386>`_
 - HTML outputs are available on the left panel
 - Code and processed data is available at: `mouseCNS_vae <https://github.com/ArianeMora/mouseCNS_vae>`_
 - Raw RNA-seq files are available at the NCBI/Gene Expression Omnibus under the accession GSE123331

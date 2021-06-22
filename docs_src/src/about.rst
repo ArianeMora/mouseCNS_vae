@@ -3,6 +3,8 @@
 SUMMARY
 =======
 
+Preprint: `bioRxiv <https://doi.org/10.1101/2021.06.22.449386>`_
+
 *********************************************************************************************************
 Deep Learning Identifies Multi-layered Roles of Polycomb Repressor Complex 2 During Mouse CNS Development
 *********************************************************************************************************

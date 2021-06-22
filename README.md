@@ -7,6 +7,7 @@ Here we provide the code and data used for all the analyses in the paper and lin
 producing the paper.
 
 ## Links to analyses and data
+- Preprint: [bioRxiv](https://doi.org/10.1101/2021.06.22.449386)
 - HTML outputs are available at:  [paper website](https://arianemora.github.io/mouseCNS_vae/)
 - Code and processed data is available here in the data and reproducibility folders.
 - Raw RNA-seq files are available at the NCBI/Gene Expression Omnibus under the accession GSE123331
