@@ -91,7 +91,6 @@ Link to preprint
    examples/significantly_affected_3_nodes
    examples/consistently_affected_6_nodes
    examples/significantly_affected_6_nodes
-   examples/significantly_affected_3_nodes
 
 
 .. toctree::
