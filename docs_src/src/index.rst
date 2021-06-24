@@ -37,8 +37,8 @@ Current addresses: #) Department of Cell and Molecular Biology, Karolinska Insti
 *Department of Physiology, Universidad Autonoma de Madrid, Madrid, Spain.
 $) School of Biomedical Sciences, University of Queensland, St Lucia QLD 4072, Australia
 
-Absract
-=======
+Abstract
+========
 A prominent aspect of most, if not all, central nervous systems (CNSs) is that anterior regions (brain) are
 larger than posterior ones (spinal cord). Studies in Drosophila and mouse have revealed that the Polycomb Repressor Complex 2 (PRC2)
 acts by several mechanisms to promote anterior CNS expansion. However, it is unclear if PRC2 acts directly and/or indirectly
