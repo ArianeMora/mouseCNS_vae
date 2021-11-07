@@ -5,9 +5,9 @@ SUMMARY
 
 Preprint: `bioRxiv <https://doi.org/10.1101/2021.06.22.449386>`_
 
-*********************************************************************************************************
-Deep Learning Identifies Multi-layered Roles of Polycomb Repressor Complex 2 During Mouse CNS Development
-*********************************************************************************************************
+***************************************************************************************************************
+Integrated gene landscapes uncover multi-layered roles of repressive histone marks during mouse CNS development
+***************************************************************************************************************
 
 Ariane Mora1, Jonathan Rakar3, Ignacio Monedero Cobeta3*, Behzad Yaghmaeian Salmani3#, Annika Starkenberg3, Stefan Thor2,3$, Mikael Bodén1
 
@@ -31,7 +31,8 @@ information from ENCODE. This multi-variate analysis corroborates the central in
 and reveals layered regulation via PRC2. These findings uncover a differential logic for the role of PRC2 upon functionally
 distinct gene categories that drive CNS anterior expansion. To support the analysis of emerging multi-modal datasets,
 we provide a novel bioinformatics package that can disentangle regulatory underpinnings of heterogeneous biological processes.
-Code for our scivae package is available at `sci-vae <https://github.com/ArianeMora/scivae>`_).
+Code for our scivae package is available at `sci-vae <https://github.com/ArianeMora/scivae>`_). Use our `interactive website <http://bioinf.scmb.uq.edu.au:81/cnsvae/static/>`_
+to look at genes of interest!
 
 
 .. figure:: _static/ISDN_poster_AM.png

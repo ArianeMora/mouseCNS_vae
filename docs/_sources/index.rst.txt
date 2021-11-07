@@ -16,13 +16,55 @@ Links to analyses and data
 - Code and processed data is available at: `mouseCNS_vae <https://github.com/ArianeMora/mouseCNS_vae>`_
 - Raw RNA-seq files are available at the NCBI/Gene Expression Omnibus under the accession GSE123331
 
-Links to developed packages
----------------------------
+Links to developed packages and tutorials
+-----------------------------------------
 - Reproducible Variational autoencoder: `scivae <https://arianemora.github.io/scivae/>`_
 - Epigenetic annotation to genes in python `scie2g <https://arianemora.github.io/sciepi2gene/>`_
 - Biomart python wrapper `scibiomart <https://arianemora.github.io/scibiomart/>`_
 - Visualisation library for chart formatting `sciviso <https://github.com/ArianeMora/sciviso/>`_
 
+Updates since review
+--------------------
+We've just been through our first round of revisions (November 2021), and we have updated several things:
+
+1) We created an `interactive website <http://bioinf.scmb.uq.edu.au:81/cnsvae/static/>`_ where you can interact with the data.
+2) Made the `data easier to download <https://github.com/ArianeMora/mouseCNS_vae/blob/main/data/results/3_node_consistent_genes/vae/DF_Visualisation_VAE.csv>`_ without having to run anything.
+3) Added all **marked anterior** genes (121) to the analysis where we test for conservation of tissue specificity between mouse and humans
+4) Added a comparison to identify if there are more blood vessel staining under *Eed-cKO*.
+5) The manuscript also has some nice updates where we put everything in context a bit better and highlighted the novelty :)
+
+
+Places where this (or a package we developed for this) has been presented
+-------------------------------------------------------------------------
+
+.. list-table::
+   :widths: 15 30 15
+   :header-rows: 1
+
+   * - Date
+     - Conference
+     - Type
+   * - 28 April 2021
+     - Melbourne bioinformatics seminar series
+     - Presentation
+   * - 25 May 2021
+     - `ISDN International Society for Developmental Neuroscience <http://www.isdn-conference.elsevier.com/>`_
+     - Poster
+   * - 25 July 2021
+     - `ISDN International Society for Developmental Neuroscience <http://www.isdn-conference.elsevier.com/>`_
+     - Poster
+   * - 10 November 2021
+     - `EMBL EAPS EMBL Australia Postgraduate Symposium <https://www.emblaustralia.org/student-opportunities/embl-australia-postgraduate-symposium>`_
+     - Lightning talk
+   * - 18 November 2021
+     - `OAMLS/ACML The 13th Asian Conference on Machine Learning <http://www.acml-conf.org/2021/>`_
+     - Poster
+   * - 19 November 2021
+     - `SCMB School of Chemistry and Molecular Biosciences symposium <https://scmb.uq.edu.au/event/2548/scmb-research-students-symposium>`_
+     - Presentation
+   * - 22 November 2021
+     - `ABACBS Australian Bioinformatics And Computational Biology Society <https://www.abacbs.org/conference2021>`_
+     - Lightning talk
 
 Authors
 =======
