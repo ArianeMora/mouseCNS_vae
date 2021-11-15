@@ -1,6 +1,6 @@
-*********************************************************************************************************
-Deep Learning Decodes Multi-layered Roles of Polycomb Repressor Complex 2 During Mouse CNS Development
-*********************************************************************************************************
+*******************************************************************************************************************************
+Variational autoencoding of gene landscapes during mouse CNS development uncovers layered roles of Polycomb Repressor Complex 2
+*******************************************************************************************************************************
 
 Information
 ===========
@@ -130,9 +130,7 @@ Link to preprint
    examples/apAxis_between-tissue
 
    examples/consistently_affected_3_nodes
-   examples/significantly_affected_3_nodes
-   examples/consistently_affected_6_nodes
-   examples/significantly_affected_6_nodes
+   examples/comparison
 
 
 .. toctree::

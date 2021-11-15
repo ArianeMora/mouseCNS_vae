@@ -1,8 +1,8 @@
-# Deep Learning Decodes Multi-layered Roles of Polycomb Repressor Complex 2 During Mouse CNS Development
+# Variational autoencoding of gene landscapes during mouse CNS development uncovers layered roles of Polycomb Repressor Complex 2
 
 
 ## Information
-This site hosts the information associated with the paper: **Deep Learning Decodes Multi-layered Roles of Polycomb Repressor Complex 2 During Mouse CNS Development**.
+This site hosts the information associated with the paper: **Variational autoencoding of gene landscapes during mouse CNS development uncovers layered roles of Polycomb Repressor Complex 2**.
 Here we provide the code and data used for all the analyses in the paper and link to the packages we developed as part of
 producing the paper.
 
@@ -53,4 +53,4 @@ Please contact ST (s.thor@uq.edu.au), MB (m.boden@uq.edu.au), and AM (a.mora@uq.
 
 
 ## Citing the preprint
-Link to preprint
+Please cite our [preprint](https://doi.org/10.1101/2021.06.22.449386).
