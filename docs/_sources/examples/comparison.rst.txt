@@ -1,0 +1,5 @@
+Comparison to other methods
+===========================
+
+.. raw:: html
+   :file: comparison.html
